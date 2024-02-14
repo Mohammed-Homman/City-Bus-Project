@@ -6,9 +6,13 @@ import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ClientController {
@@ -25,6 +29,11 @@ public class ClientController {
         ClientEntity clientEntity = clientMapper.mapFrom(clientDto);
         ClientEntity savedClientEntity = clientService.save(clientEntity);
         return new ResponseEntity<>(clientMapper.mapTo(savedClientEntity), HttpStatus.CREATED);
+    }
+    @GetMapping(path="/Client")
+    public List<ClientDto> listClients(){
+        List<ClientEntity> clientEntities = clientService.findAll();
+        return clientEntities.stream().map(clientMapper::mapTo).collect(Collectors.toList());
     }
 
 }
