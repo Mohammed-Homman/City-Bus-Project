@@ -8,6 +8,7 @@ class CityBusProjectApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

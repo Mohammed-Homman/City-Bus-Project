@@ -8,4 +8,6 @@ public interface ClientService {
     ClientEntity save(ClientEntity clientEntity);
 
     List<ClientEntity> findAll();
+
+    boolean isExists(int id);
 }

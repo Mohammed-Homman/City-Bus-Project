@@ -26,4 +26,9 @@ public class ClientServiceImpl implements ClientService {
     public List<ClientEntity> findAll() {
         return StreamSupport.stream(clientRepository.findAll().spliterator(),false).collect(Collectors.toList());
     }
+
+    @Override
+    public boolean isExists(int id) {
+        return clientRepository.existsById(id);
+    }
 }

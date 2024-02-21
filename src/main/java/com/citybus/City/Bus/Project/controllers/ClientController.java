@@ -6,10 +6,7 @@ import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,5 +32,22 @@ public class ClientController {
         List<ClientEntity> clientEntities = clientService.findAll();
         return clientEntities.stream().map(clientMapper::mapTo).collect(Collectors.toList());
     }
+    @PutMapping(path = "/Client/{id}")
+    public ResponseEntity<ClientDto> fullUpdateClient(
+            @PathVariable("id") int id,
+            @RequestBody ClientDto clientDto){
+        if (!clientService.isExists(id)) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+            clientDto.setId(id);
+            ClientEntity clientEntity = clientMapper.mapFrom(clientDto);
+            ClientEntity savedClientEntity = clientService.save(clientEntity);
+            return new ResponseEntity<>(
+                    clientMapper.mapTo(savedClientEntity),
+                    HttpStatus.OK);
+        }
+
+
 
 }
