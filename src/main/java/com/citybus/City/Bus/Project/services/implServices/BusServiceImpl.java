@@ -46,4 +46,8 @@ public class BusServiceImpl implements BusService {
         }).orElseThrow(()-> new RuntimeException("Bus does not exist"));
     }
 
+    @Override
+    public void delete(int id) {
+        busRepository.deleteById(id);
+    }
 }

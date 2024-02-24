@@ -70,4 +70,11 @@ public class BusController {
         return new ResponseEntity<>(
                 busMapper.mapTo(updatedBus),
                 HttpStatus.OK);
-    }}
+    }
+
+    @DeleteMapping(path = "/Bus/{id}")
+    public ResponseEntity deleteBus(@PathVariable("id") int id){
+        busService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+}
