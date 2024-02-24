@@ -21,6 +21,4 @@ public class Station_Entity {
     private String nom_station;
     private BigDecimal latitude;
     private BigDecimal longitude;
-
-
 }
