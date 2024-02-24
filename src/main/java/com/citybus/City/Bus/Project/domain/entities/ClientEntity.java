@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Table(name = "Client")
 public class ClientEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
     private String nom;

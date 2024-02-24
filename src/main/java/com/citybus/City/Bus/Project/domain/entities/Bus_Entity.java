@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Table(name = "Bus")
 public class Bus_Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bus_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_bus;
     private String matricule;
     private String marque;

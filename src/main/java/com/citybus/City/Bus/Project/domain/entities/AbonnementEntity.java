@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 @Data
@@ -16,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "Abonnement")
 public class AbonnementEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "abonnement_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private LocalDate date_debut;
     private LocalDate date_fin;
