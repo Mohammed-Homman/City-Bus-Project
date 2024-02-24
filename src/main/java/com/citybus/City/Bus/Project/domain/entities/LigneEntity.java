@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class LigneEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ligne_id_seq")
-    private int id_ligne;
+    private int id;
     private String nom_ligne;
     private String description_ligne;
     private String couleur_ligne;

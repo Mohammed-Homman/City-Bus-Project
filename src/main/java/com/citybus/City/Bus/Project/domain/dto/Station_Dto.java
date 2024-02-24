@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class Station_Dto {
-    private int station_id;
+    private int id;
     private String nom_station;
     private BigDecimal latitude;
     private BigDecimal longitude;

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Position_GPS_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "position_gps_id_seq")
-    private int id_position;
+    private int id;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private LocalDateTime temps_de_localisation;

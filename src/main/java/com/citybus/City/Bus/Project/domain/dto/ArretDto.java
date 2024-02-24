@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ArretDto {
-    private int id_arret;
+    private int id;
     private int ordre_arret;
 }

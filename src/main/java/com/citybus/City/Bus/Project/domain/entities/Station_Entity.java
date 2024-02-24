@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class Station_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "station_id_seq")
-    private int station_id;
+    private int id;
     private String nom_station;
     private BigDecimal latitude;
     private BigDecimal longitude;

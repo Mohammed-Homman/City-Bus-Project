@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class Itiniraire_Dto {
-    private int itiniraire_id;
+    private int id;
+    private int nom;
 }

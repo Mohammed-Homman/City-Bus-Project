@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class ChauffeurDto {
-    private int id_chauffeur;
+    private int id;
     private String nom_chauffeur;
     private String prenom_chauffeur;
     private LocalDate date_naissance;

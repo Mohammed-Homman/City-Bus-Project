@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Position_GPS_Dto {
-    private int id_position;
+    private int id;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private LocalDateTime temps_de_localisation;
