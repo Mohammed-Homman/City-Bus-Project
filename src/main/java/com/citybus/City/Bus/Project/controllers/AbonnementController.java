@@ -64,21 +64,21 @@ public class AbonnementController {
             abonnementMapper.mapTo(savedAbonnementEntity),
             HttpStatus.OK);
   }
-//  @PatchMapping(path = "/Abonnement/{id}")
-//  public ResponseEntity<AbonnementDto> partialUpdate(
-//          @PathVariable("id") int id,
-//          @RequestBody AbonnementDto abonnementDto
-//  ){
-//    if(!abonnementService.isExists(id)){
-//      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
-//
-//    AbonnementEntity abonnementEntity = abonnementMapper.mapFrom(abonnementDto);
-//    AbonnementEntity updatedAbonnement = abonnementService.partialUpdate(id, abonnementEntity);
-//    return new ResponseEntity<>(
-//            abonnementMapper.mapTo(updatedAbonnement),
-//            HttpStatus.OK);
-//  }
+  @PatchMapping(path = "/Abonnement/{id}")
+  public ResponseEntity<AbonnementDto> partialUpdate(
+          @PathVariable("id") int id,
+          @RequestBody AbonnementDto abonnementDto
+  ){
+    if(!abonnementService.isExists(id)){
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    AbonnementEntity abonnementEntity = abonnementMapper.mapFrom(abonnementDto);
+    AbonnementEntity updatedAbonnement = abonnementService.partialUpdate(id, abonnementEntity);
+    return new ResponseEntity<>(
+            abonnementMapper.mapTo(updatedAbonnement),
+            HttpStatus.OK);
+  }
 
   @DeleteMapping(path = "/Abonnement/{id}")
   public ResponseEntity deleteAbonnement(@PathVariable("id") int id){

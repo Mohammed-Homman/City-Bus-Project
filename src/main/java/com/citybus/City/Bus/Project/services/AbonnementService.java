@@ -15,4 +15,6 @@ public interface AbonnementService {
     Optional<AbonnementEntity> findOne(int id);
 
     void delete(int id);
+
+    AbonnementEntity partialUpdate(int id, AbonnementEntity abonnementEntity);
 }

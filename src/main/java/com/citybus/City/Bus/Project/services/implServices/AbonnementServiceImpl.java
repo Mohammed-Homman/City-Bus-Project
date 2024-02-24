@@ -41,4 +41,9 @@ public class AbonnementServiceImpl implements AbonnementService {
     public void delete(int id) {
         abonnementRepository.deleteById(id);
     }
+
+    @Override
+    public AbonnementEntity partialUpdate(int id, AbonnementEntity abonnementEntity) {
+        return null;
+    }
 }
