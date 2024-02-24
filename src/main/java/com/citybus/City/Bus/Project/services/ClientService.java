@@ -15,4 +15,6 @@ public interface ClientService {
     Optional<ClientEntity> findOne(int id);
 
     ClientEntity partialUpdate(int id, ClientEntity clientEntity);
+
+    void delete(int id);
 }

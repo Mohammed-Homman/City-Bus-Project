@@ -72,4 +72,9 @@ public class ClientController {
                 clientMapper.mapTo(updatedClient),
                 HttpStatus.OK);
     }
+    @DeleteMapping(path = "/Client/{id}")
+    public ResponseEntity deleteClient(@PathVariable("id") int id){
+        clientService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

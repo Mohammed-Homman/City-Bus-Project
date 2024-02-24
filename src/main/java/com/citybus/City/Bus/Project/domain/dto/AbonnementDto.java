@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class AbonnementDto {
-    private int id_Abonnement;
+    private int id;
     private LocalDate date_debut;
     private LocalDate date_fin;
     private Double prix;

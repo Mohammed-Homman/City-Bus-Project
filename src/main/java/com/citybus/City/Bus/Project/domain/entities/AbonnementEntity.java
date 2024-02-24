@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class AbonnementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "abonnement_id_seq")
-    private int id_Abonnement;
+    private int id;
     private LocalDate date_debut;
     private LocalDate date_fin;
     private Double prix;

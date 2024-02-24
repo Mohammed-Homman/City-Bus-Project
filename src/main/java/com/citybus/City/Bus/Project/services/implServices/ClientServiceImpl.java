@@ -20,7 +20,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientEntity save(ClientEntity clientEntity) {
-        return clientRepository.save((clientEntity));
+        return clientRepository.save(clientEntity);
     }
 
     @Override
@@ -58,6 +58,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public boolean isExists(int id) {
         return clientRepository.existsById(id);
+    }
+    @Override
+    public void delete(int id) {
+        clientRepository.deleteById(id);
     }
 
 }
