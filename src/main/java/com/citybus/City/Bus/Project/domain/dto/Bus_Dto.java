@@ -12,12 +12,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class Bus_Dto {
-    private int id_bus;
+    private int id;
     private String matricule;
     private String marque;
     private String modele;
     private int capacite;
     private LocalDate derniere_maintenance;
     private int nombre_de_reparation;
+
 
 }
