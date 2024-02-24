@@ -4,7 +4,9 @@ import com.citybus.City.Bus.Project.domain.dto.Itiniraire_Dto;
 import com.citybus.City.Bus.Project.domain.entities.Itiniraire_Entity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ItiniraireMapper implements Mapper<Itiniraire_Entity, Itiniraire_Dto> {
     private ModelMapper modelMapper;
 

@@ -4,7 +4,9 @@ import com.citybus.City.Bus.Project.domain.dto.Type_AbonnementDto;
 import com.citybus.City.Bus.Project.domain.entities.Type_AbonnementEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Type_AbonnementMapper implements Mapper<Type_AbonnementEntity, Type_AbonnementDto> {
     private ModelMapper modelMapper;
 

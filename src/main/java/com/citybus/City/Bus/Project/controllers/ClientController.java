@@ -72,8 +72,4 @@ public class ClientController {
                 clientMapper.mapTo(updatedClient),
                 HttpStatus.OK);
     }
-
-
-
-
 }

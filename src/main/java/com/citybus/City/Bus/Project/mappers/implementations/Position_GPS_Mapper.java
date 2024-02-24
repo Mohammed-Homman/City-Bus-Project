@@ -4,7 +4,9 @@ import com.citybus.City.Bus.Project.domain.dto.Position_GPS_Dto;
 import com.citybus.City.Bus.Project.domain.entities.Position_GPS_Entity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Position_GPS_Mapper implements Mapper<Position_GPS_Entity,Position_GPS_Dto> {
     private ModelMapper modelMapper;
 

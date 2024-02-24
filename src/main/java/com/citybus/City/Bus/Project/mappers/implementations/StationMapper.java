@@ -4,7 +4,9 @@ import com.citybus.City.Bus.Project.domain.dto.Station_Dto;
 import com.citybus.City.Bus.Project.domain.entities.Station_Entity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StationMapper implements Mapper<Station_Entity, Station_Dto> {
     private ModelMapper modelMapper;
 

@@ -5,7 +5,9 @@ import com.citybus.City.Bus.Project.domain.entities.Statut_Bus_Entity;
 import com.citybus.City.Bus.Project.domain.entities.Statut_ChauffeurEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Statut_Chauffeur_Mapper implements Mapper<Statut_ChauffeurEntity, Statut_ChauffeurDto> {
     private ModelMapper modelMapper;
 
