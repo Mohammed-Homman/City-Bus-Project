@@ -85,4 +85,5 @@ public class AbonnementController {
     abonnementService.delete(id);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
+
 }

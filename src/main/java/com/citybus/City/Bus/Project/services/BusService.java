@@ -15,4 +15,6 @@ public interface BusService {
     boolean isExists(int id);
 
     Bus_Entity partialUpdate(int id, Bus_Entity busEntity);
+
+    void delete(int id);
 }
