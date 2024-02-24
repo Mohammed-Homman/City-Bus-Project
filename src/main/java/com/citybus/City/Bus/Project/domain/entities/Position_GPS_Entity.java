@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "Position_GPS")
 public class Position_GPS_Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "position_gps_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_position;
     private BigDecimal latitude;
     private BigDecimal longitude;

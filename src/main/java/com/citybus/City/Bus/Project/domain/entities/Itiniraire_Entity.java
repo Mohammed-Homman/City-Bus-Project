@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "Itiniraire")
 public class Itiniraire_Entity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "itiniraire_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int itiniraire_id;
 }

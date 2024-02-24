@@ -1,12 +1,10 @@
 package com.citybus.City.Bus.Project.controllers;
 
 import com.citybus.City.Bus.Project.domain.dto.AbonnementDto;
-import com.citybus.City.Bus.Project.domain.dto.ClientDto;
 import com.citybus.City.Bus.Project.domain.entities.AbonnementEntity;
-import com.citybus.City.Bus.Project.domain.entities.ClientEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
-import com.citybus.City.Bus.Project.mappers.implementations.AbonnementMapper;
 import com.citybus.City.Bus.Project.services.AbonnementService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +24,17 @@ public class AbonnementController {
   }
 
   @PostMapping(path = "/Abonnement")
-  public ResponseEntity<AbonnementDto> createAbonnement(@RequestBody AbonnementDto abonnementDto){
-    AbonnementEntity abonnementEntity = abonnementMapper.mapFrom(abonnementDto);
-    AbonnementEntity savedAbonnementEntity = abonnementService.save(abonnementEntity);
-    return new ResponseEntity<>(abonnementMapper.mapTo(savedAbonnementEntity), HttpStatus.CREATED);
+  public ResponseEntity<AbonnementDto> createAbonnement(@RequestBody AbonnementDto abonnementDto) {
+    try {
+      AbonnementEntity abonnementEntity = abonnementMapper.mapFrom(abonnementDto);
+      AbonnementEntity savedAbonnementEntity = abonnementService.save(abonnementEntity);
+      return new ResponseEntity<>(abonnementMapper.mapTo(savedAbonnementEntity), HttpStatus.CREATED);
+    } catch (DataIntegrityViolationException e) {
+      // Handle duplicate key violation gracefully
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
+    }
   }
+
   @GetMapping(path = "/Abonnement")
   public List<AbonnementDto> listAbonnements(){
     List<AbonnementEntity> abonnementEntities = abonnementService.findAll();

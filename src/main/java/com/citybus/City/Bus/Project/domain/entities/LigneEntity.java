@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Ligne")
 public class LigneEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ligne_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_ligne;
     private String nom_ligne;
     private String description_ligne;

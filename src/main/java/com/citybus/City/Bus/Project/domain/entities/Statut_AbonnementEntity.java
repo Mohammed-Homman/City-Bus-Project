@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Statut_Abonnement")
 public class Statut_AbonnementEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Statut_Abonnemnt_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_statut_abonnement;
     private String nom_statut_abonnement;
 }

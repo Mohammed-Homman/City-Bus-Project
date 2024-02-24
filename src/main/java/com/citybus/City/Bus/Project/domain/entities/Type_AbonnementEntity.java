@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Type_Abonnement")
 public class Type_AbonnementEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Type_Abonnemnt_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_type_abonnement;
     private String nom_type_abonnement;
 }

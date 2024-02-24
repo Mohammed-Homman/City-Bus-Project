@@ -4,6 +4,7 @@ import com.citybus.City.Bus.Project.domain.dto.ClientDto;
 import com.citybus.City.Bus.Project.domain.entities.ClientEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.ClientService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +24,15 @@ public class ClientController {
     }
 
     @PostMapping(path = "/Client")
-    public ResponseEntity<ClientDto> createClient(@RequestBody ClientDto clientDto){
-        ClientEntity clientEntity = clientMapper.mapFrom(clientDto);
-        ClientEntity savedClientEntity = clientService.save(clientEntity);
-        return new ResponseEntity<>(clientMapper.mapTo(savedClientEntity), HttpStatus.CREATED);
-    }
+    public ResponseEntity<ClientDto> createClient(@RequestBody ClientDto clientDto) {
+        try {
+            ClientEntity clientEntity = clientMapper.mapFrom(clientDto);
+            ClientEntity savedClientEntity = clientService.save(clientEntity);
+            return new ResponseEntity<>(clientMapper.mapTo(savedClientEntity), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            // Handle duplicate key violation gracefully
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }}
     @GetMapping(path="/Client")
     public List<ClientDto> listClients(){
         List<ClientEntity> clientEntities = clientService.findAll();
