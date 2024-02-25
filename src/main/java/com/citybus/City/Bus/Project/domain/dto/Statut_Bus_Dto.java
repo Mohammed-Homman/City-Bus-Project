@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 
 public class Statut_Bus_Dto {
-    private int id_statut_bus;
+    private int id;
     private String nom_statut_bus;
 
 }

@@ -4,6 +4,7 @@ import com.citybus.City.Bus.Project.domain.dto.Statut_AbonnementDto;
 import com.citybus.City.Bus.Project.domain.entities.Statut_AbonnementEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.Statut_Abonnement_Service;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,14 @@ public class Statut_AbonnementController {
 
     @PostMapping(path = "/Statut_Abonnement")
     public ResponseEntity<Statut_AbonnementDto> createStatut_Abonnement(@RequestBody Statut_AbonnementDto statut_AbonnementDto) {
-        Statut_AbonnementEntity statut_AbonnementEntity = statut_AbonnementMapper.mapFrom(statut_AbonnementDto);
-        Statut_AbonnementEntity savedStatut_AbonnementEntity = statut_AbonnementService.save(statut_AbonnementEntity);
-        return new ResponseEntity<>(statut_AbonnementMapper.mapTo(savedStatut_AbonnementEntity), HttpStatus.CREATED);
+        try{
+            Statut_AbonnementEntity statut_AbonnementEntity = statut_AbonnementMapper.mapFrom(statut_AbonnementDto);
+            Statut_AbonnementEntity savedStatut_AbonnementEntity = statut_AbonnementService.save(statut_AbonnementEntity);
+            return new ResponseEntity<>(statut_AbonnementMapper.mapTo(savedStatut_AbonnementEntity), HttpStatus.CREATED);
+        }catch (DataIntegrityViolationException e) {
+            // Handle duplicate key violation gracefully
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping(path="/Statut_Abonnement")

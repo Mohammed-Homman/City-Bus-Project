@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class Type_AbonnementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id_type_abonnement;
+    private int id;
     private String nom_type_abonnement;
 }

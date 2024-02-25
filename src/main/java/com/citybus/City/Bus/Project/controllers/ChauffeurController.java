@@ -4,6 +4,7 @@ import com.citybus.City.Bus.Project.domain.dto.ChauffeurDto;
 import com.citybus.City.Bus.Project.domain.entities.ChauffeurEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.ChauffeurService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,14 @@ public class ChauffeurController {
     }
     @PostMapping(path = "/Chauffeur")
     public ResponseEntity<ChauffeurDto> createChauffeur(@RequestBody ChauffeurDto chauffeurDto){
-        ChauffeurEntity chauffeurEntity = chauffeurMapper.mapFrom(chauffeurDto);
-        ChauffeurEntity savedChauffeurEntity = chauffeurService.save(chauffeurEntity);
-        return new ResponseEntity<>(chauffeurMapper.mapTo(savedChauffeurEntity), HttpStatus.CREATED);
+        try{
+            ChauffeurEntity chauffeurEntity = chauffeurMapper.mapFrom(chauffeurDto);
+            ChauffeurEntity savedChauffeurEntity = chauffeurService.save(chauffeurEntity);
+            return new ResponseEntity<>(chauffeurMapper.mapTo(savedChauffeurEntity), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            // Handle duplicate key violation gracefully
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
     @GetMapping(path="/Chauffeur")
     public List<ChauffeurDto> listChauffeur(){

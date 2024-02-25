@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class Statut_Bus_Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id_statut_bus;
+    private int id;
     private String nom_statut_bus;
 }
