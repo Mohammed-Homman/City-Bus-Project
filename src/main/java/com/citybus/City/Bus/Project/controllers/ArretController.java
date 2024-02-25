@@ -4,6 +4,7 @@ import com.citybus.City.Bus.Project.domain.dto.ArretDto;
 import com.citybus.City.Bus.Project.domain.entities.ArretEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.ArretService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,14 @@ public class ArretController {
 
     @PostMapping(path = "/Arret")
     public ResponseEntity<ArretDto> createArret(@RequestBody ArretDto arretDto){
-        ArretEntity arretEntity = arretMapper.mapFrom(arretDto);
-        ArretEntity savedArretEntity = arretService.save(arretEntity);
-        return new ResponseEntity<>(arretMapper.mapTo(savedArretEntity), HttpStatus.CREATED);
+        try{
+            ArretEntity arretEntity = arretMapper.mapFrom(arretDto);
+            ArretEntity savedArretEntity = arretService.save(arretEntity);
+            return new ResponseEntity<>(arretMapper.mapTo(savedArretEntity), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            // Handle duplicate key violation gracefully
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
     @GetMapping(path="/Arret")
     public List<ArretDto> listArrets(){

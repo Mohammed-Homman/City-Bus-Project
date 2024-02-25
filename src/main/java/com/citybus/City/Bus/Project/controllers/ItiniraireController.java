@@ -7,6 +7,7 @@ import com.citybus.City.Bus.Project.domain.entities.Itiniraire_Entity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.ClientService;
 import com.citybus.City.Bus.Project.services.ItiniraireService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +27,14 @@ public class ItiniraireController {
 
     @PostMapping(path = "/Itiniraire")
     public ResponseEntity<Itiniraire_Dto> createItiniraire(@RequestBody Itiniraire_Dto itiniraireDto){
-        Itiniraire_Entity itiniraireEntity = itiniraireMapper.mapFrom(itiniraireDto);
-        Itiniraire_Entity savedItiniraireEntity = itiniraireService.save(itiniraireEntity);
-        return new ResponseEntity<>(itiniraireMapper.mapTo(savedItiniraireEntity), HttpStatus.CREATED);
+        try{
+            Itiniraire_Entity itiniraireEntity = itiniraireMapper.mapFrom(itiniraireDto);
+            Itiniraire_Entity savedItiniraireEntity = itiniraireService.save(itiniraireEntity);
+            return new ResponseEntity<>(itiniraireMapper.mapTo(savedItiniraireEntity), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            // Handle duplicate key violation gracefully
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
     @GetMapping(path="/Itiniraire")
     public List<Itiniraire_Dto> listItiniraires(){

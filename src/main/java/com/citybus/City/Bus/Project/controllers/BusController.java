@@ -4,6 +4,7 @@ import com.citybus.City.Bus.Project.domain.dto.Bus_Dto;
 import com.citybus.City.Bus.Project.domain.entities.Bus_Entity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.BusService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,14 @@ public class BusController {
     }
     @PostMapping(path = "/Bus")
     public ResponseEntity<Bus_Dto> createBus(@RequestBody Bus_Dto busDto){
-        Bus_Entity busEntity = busMapper.mapFrom(busDto);
-        Bus_Entity savedBusEntity = busService.save(busEntity);
-        return new ResponseEntity<>(busMapper.mapTo(savedBusEntity), HttpStatus.CREATED);
+        try{
+            Bus_Entity busEntity = busMapper.mapFrom(busDto);
+            Bus_Entity savedBusEntity = busService.save(busEntity);
+            return new ResponseEntity<>(busMapper.mapTo(savedBusEntity), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            // Handle duplicate key violation gracefully
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
     @GetMapping(path="/Bus")
     public List<Bus_Dto> listBus(){

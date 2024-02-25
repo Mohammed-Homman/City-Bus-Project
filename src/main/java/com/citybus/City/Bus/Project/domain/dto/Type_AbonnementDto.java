@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Type_AbonnementDto {
-    private int id_type_abonnement;
+    private int id;
     private String nom_type_abonnement;
 }

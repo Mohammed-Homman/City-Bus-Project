@@ -17,7 +17,7 @@ public class Type_Bus_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int type_bus_id;
+    private int id;
     private String nom_type_bus;
 
 
