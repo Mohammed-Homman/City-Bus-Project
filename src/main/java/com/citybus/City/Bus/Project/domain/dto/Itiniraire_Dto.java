@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 
 public class Itiniraire_Dto {
     private int id;
-    private int nom;
 }

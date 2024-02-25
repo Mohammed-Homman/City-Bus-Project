@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Table(name = "Chauffeur")
 public class ChauffeurEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chauffeur_id_seq")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String nom_chauffeur;
     private String prenom_chauffeur;
