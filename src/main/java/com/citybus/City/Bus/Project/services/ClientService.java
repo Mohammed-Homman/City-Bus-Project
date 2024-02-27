@@ -10,11 +10,12 @@ public interface ClientService {
 
     List<ClientEntity> findAll();
 
-    boolean isExists(int id);
+    boolean isExists(String id);
 
-    Optional<ClientEntity> findOne(int id);
 
-    ClientEntity partialUpdate(int id, ClientEntity clientEntity);
+    ClientEntity partialUpdate(String id, ClientEntity clientEntity);
 
-    void delete(int id);
+    void delete(String id);
+
+    Optional<ClientEntity> findOne(String id);
 }

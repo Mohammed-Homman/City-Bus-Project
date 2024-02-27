@@ -29,12 +29,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<ClientEntity> findOne(int id) {
+    public Optional<ClientEntity> findOne(String id) {
         return clientRepository.findById(id);
     }
 
     @Override
-    public ClientEntity partialUpdate(int id, ClientEntity clientEntity) {
+    public ClientEntity partialUpdate(String id, ClientEntity clientEntity) {
         clientEntity.setId(id);
 
         return clientRepository.findById(id).map(existingClient ->{
@@ -56,12 +56,12 @@ public class ClientServiceImpl implements ClientService {
     ;
 
     @Override
-    public boolean isExists(int id) {
+    public boolean isExists(String id) {
         return clientRepository.existsById(id);
     }
+
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         clientRepository.deleteById(id);
     }
-
 }

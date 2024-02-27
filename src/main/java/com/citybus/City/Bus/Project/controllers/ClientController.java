@@ -39,7 +39,7 @@ public class ClientController {
         return clientEntities.stream().map(clientMapper::mapTo).collect(Collectors.toList());
     }
     @GetMapping(path = "/Client/{id}")
-    public ResponseEntity<ClientDto> getClient(@PathVariable("id") int id){
+    public ResponseEntity<ClientDto> getClient(@PathVariable("id") String id){
         Optional<ClientEntity> foundClient = clientService.findOne(id);
         return foundClient.map(clientEntity -> {
             ClientDto clientDto = clientMapper.mapTo(clientEntity);
@@ -49,7 +49,7 @@ public class ClientController {
 
     @PutMapping(path = "/Client/{id}")
     public ResponseEntity<ClientDto> fullUpdateClient(
-            @PathVariable("id") int id,
+            @PathVariable("id") String id,
             @RequestBody ClientDto clientDto){
         if (!clientService.isExists(id)) {
 
@@ -64,7 +64,7 @@ public class ClientController {
         }
     @PatchMapping(path = "/Client/{id}")
     public ResponseEntity<ClientDto> partialUpdate(
-            @PathVariable("id") int id,
+            @PathVariable("id") String id,
             @RequestBody ClientDto clientDto
     ){
         if(!clientService.isExists(id)){
@@ -78,7 +78,7 @@ public class ClientController {
                 HttpStatus.OK);
     }
     @DeleteMapping(path = "/Client/{id}")
-    public ResponseEntity deleteClient(@PathVariable("id") int id){
+    public ResponseEntity deleteClient(@PathVariable("id") String id){
         clientService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
