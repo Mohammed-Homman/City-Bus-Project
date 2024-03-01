@@ -17,4 +17,10 @@ public interface BusService {
     Bus_Entity partialUpdate(int id, Bus_Entity busEntity);
 
     void delete(int id);
+
+    void updateBusType(int busId, int typeId);
+
+    void updateBusStatut(int busId, int statutId);
+
+    void updateBusPosition(int busId, int positionId);
 }

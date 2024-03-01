@@ -19,6 +19,4 @@ public class Type_Bus_Entity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String nom_type_bus;
-
-
 }

@@ -83,4 +83,36 @@ public class BusController {
         busService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    @PostMapping("/Bus/{busId}/addClient/{typeId}")
+    public ResponseEntity<?> updateBusType(@PathVariable("busId") int busId,
+                                                  @PathVariable("clientId") int typeId) {
+        try {
+            busService.updateBusType(busId, typeId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update subscription type.");
+        }
+    }
+
+    @PostMapping("/Bus/{busId}/updateStatut/{statutId}")
+    public ResponseEntity<?> updateBusStatut(@PathVariable("busId") int busId,
+                                                    @PathVariable("statutId") int statutId) {
+        try {
+            busService.updateBusStatut(busId, statutId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update subscription status.");
+        }
+    }
+    @PostMapping("/Bus/{busId}/updatePosition/{positionId}")
+    public ResponseEntity<?> updateBusPosition(@PathVariable("busId") int busId,
+                                               @PathVariable("positionId") int positionId) {
+        try {
+            busService.updateBusPosition(busId, positionId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update bus position.");
+        }
+    }
+
 }

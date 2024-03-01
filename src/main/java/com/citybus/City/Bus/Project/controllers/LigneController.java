@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -82,4 +83,25 @@ public class LigneController {
         ligneService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping(path = "/Ligne/{ligneId}/addAbonnement/{abonnementId}")
+    public ResponseEntity<Void> addAbonnementToLigne(@PathVariable("ligneId") int ligneId, @PathVariable("abonnementId") int abonnementId) {
+        ligneService.addAbonnementToLigne(ligneId, abonnementId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/Ligne/{ligneId}/removeAbonnement/{abonnementId}")
+    public ResponseEntity<Void> removeAbonnementFromLigne(@PathVariable("ligneId") int ligneId, @PathVariable("abonnementId") int abonnementId) {
+        try {
+            ligneService.removeAbonnementFromLigne(ligneId, abonnementId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            // Gérer le cas où la ligne ou l'abonnement n'existe pas
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Gérer toute autre exception inattendue
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

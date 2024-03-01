@@ -2,6 +2,7 @@ package com.citybus.City.Bus.Project.controllers;
 
 import com.citybus.City.Bus.Project.domain.dto.AbonnementDto;
 import com.citybus.City.Bus.Project.domain.entities.AbonnementEntity;
+import com.citybus.City.Bus.Project.domain.entities.Type_AbonnementEntity;
 import com.citybus.City.Bus.Project.mappers.Mapper;
 import com.citybus.City.Bus.Project.services.AbonnementService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -84,6 +85,85 @@ public class AbonnementController {
   public ResponseEntity deleteAbonnement(@PathVariable("id") int id){
     abonnementService.delete(id);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
+  }
+  @PutMapping(path = "/Abonnement/{abonnementId}/addClient/{clientId}")
+  public ResponseEntity<Void> addClientToAbonnement(@PathVariable("abonnementId") int abonnementId, @PathVariable("clientId") int clientId) {
+    abonnementService.addClientToAbonnement(clientId, abonnementId);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+  @DeleteMapping("/Abonnement/{abonnementId}/removeClient/{clientId}")
+  public ResponseEntity<Void> removeClientFromAbonnement(@PathVariable("abonnementId") int abonnementId,
+                                                         @PathVariable("clientId") int clientId) {
+    try {
+      // Vérifier si l'abonnement existe
+      if (!abonnementService.isExists(abonnementId)) {
+        return ResponseEntity.notFound().build();
+      }
+
+      // Supprimer le client de l'abonnement
+      abonnementService.removeClientFromAbonnement(clientId, abonnementId);
+
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @PostMapping("/Abonnement/{abonnementId}/addClient/{typeId}")
+  public ResponseEntity<?> updateAbonnementType(@PathVariable("abonnementId") int abonnementId,
+                                                @PathVariable("clientId") int typeId) {
+    try {
+      abonnementService.updateAbonnementType(abonnementId, typeId);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update subscription type.");
+    }
+  }
+
+  @PostMapping("/Abonnement/{abonnementId}/updateStatut/{statutId}")
+  public ResponseEntity<?> updateAbonnementStatut(@PathVariable("abonnementId") int abonnementId,
+                                                  @PathVariable("statutId") int statutId) {
+    try {
+      abonnementService.updateAbonnementStatut(abonnementId, statutId);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update subscription status.");
+    }
+  }
+
+  @PutMapping(path = "/Abonnement/{abonnementId}/addLigne/{ligneId}")
+  public ResponseEntity<Void> addLigneToAbonnement(@PathVariable("abonnementId") int abonnementId, @PathVariable("ligneId") int ligneId) {
+    try {
+      // Check if the abonnement exists
+      if (!abonnementService.isExists(abonnementId)) {
+        return ResponseEntity.notFound().build();
+      }
+
+      // Add the ligne to the abonnement
+      abonnementService.addLigneToAbonnement(ligneId, abonnementId);
+
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @DeleteMapping("/Abonnement/{abonnementId}/removeLigne/{ligneId}")
+  public ResponseEntity<Void> removeLigneFromAbonnement(@PathVariable("abonnementId") int abonnementId,
+                                                        @PathVariable("ligneId") int ligneId) {
+    try {
+      // Check if the abonnement exists
+      if (!abonnementService.isExists(abonnementId)) {
+        return ResponseEntity.notFound().build();
+      }
+
+      // Remove the ligne from the abonnement
+      abonnementService.removeLigneFromAbonnement(ligneId, abonnementId);
+
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
 }
