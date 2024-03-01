@@ -13,5 +13,4 @@ import lombok.NoArgsConstructor;
 public class Type_Bus_Dto {
     private int id;
     private String nom_type_bus;
-
 }

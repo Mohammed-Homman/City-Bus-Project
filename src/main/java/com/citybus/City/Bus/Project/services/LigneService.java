@@ -17,4 +17,8 @@ public interface LigneService {
     LigneEntity partialUpdate(int id, LigneEntity ligneEntity);
 
     void delete(int id);
+
+    void addAbonnementToLigne(int ligneId, int abonnementId);
+
+    void removeAbonnementFromLigne(int ligneId, int abonnementId);
 }

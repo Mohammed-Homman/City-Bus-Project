@@ -1,10 +1,13 @@
 package com.citybus.City.Bus.Project.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +23,8 @@ public class LigneEntity {
     private String description_ligne;
     private String couleur_ligne;
     private Double distance_ligne;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "lignes")
+    private List<AbonnementEntity> abonnements;
 }

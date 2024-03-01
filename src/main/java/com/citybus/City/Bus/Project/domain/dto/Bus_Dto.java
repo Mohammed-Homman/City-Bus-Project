@@ -1,5 +1,9 @@
 package com.citybus.City.Bus.Project.domain.dto;
 
+import com.citybus.City.Bus.Project.domain.entities.Type_Bus_Entity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +23,5 @@ public class Bus_Dto {
     private int capacite;
     private LocalDate derniere_maintenance;
     private int nombre_de_reparation;
-
-
+    private Type_Bus_Entity type;
 }

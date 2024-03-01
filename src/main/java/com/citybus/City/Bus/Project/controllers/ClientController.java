@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,7 +41,7 @@ public class ClientController {
         return clientEntities.stream().map(clientMapper::mapTo).collect(Collectors.toList());
     }
     @GetMapping(path = "/Client/{id}")
-    public ResponseEntity<ClientDto> getClient(@PathVariable("id") String id){
+    public ResponseEntity<ClientDto> getClient(@PathVariable("id") int id){
         Optional<ClientEntity> foundClient = clientService.findOne(id);
         return foundClient.map(clientEntity -> {
             ClientDto clientDto = clientMapper.mapTo(clientEntity);
@@ -49,7 +51,7 @@ public class ClientController {
 
     @PutMapping(path = "/Client/{id}")
     public ResponseEntity<ClientDto> fullUpdateClient(
-            @PathVariable("id") String id,
+            @PathVariable("id") int id,
             @RequestBody ClientDto clientDto){
         if (!clientService.isExists(id)) {
 
@@ -64,7 +66,7 @@ public class ClientController {
         }
     @PatchMapping(path = "/Client/{id}")
     public ResponseEntity<ClientDto> partialUpdate(
-            @PathVariable("id") String id,
+            @PathVariable("id") int id,
             @RequestBody ClientDto clientDto
     ){
         if(!clientService.isExists(id)){
@@ -78,8 +80,29 @@ public class ClientController {
                 HttpStatus.OK);
     }
     @DeleteMapping(path = "/Client/{id}")
-    public ResponseEntity deleteClient(@PathVariable("id") String id){
+    public ResponseEntity deleteClient(@PathVariable("id") int id){
         clientService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    @PutMapping(path = "/Client/{clientId}/addAbonnement/{abonnementId}")
+    public ResponseEntity<Void> addAbonnementToClient(@PathVariable("clientId") int clientId, @PathVariable("abonnementId") int abonnementId) {
+        clientService.addAbonnementToClient(clientId, abonnementId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping(path = "/Client/{clientId}/removeAbonnement/{abonnementId}")
+    public ResponseEntity<Void> removeAbonnementFromClient(@PathVariable("clientId") int clientId, @PathVariable("abonnementId") int abonnementId) {
+        try {
+            clientService.removeAbonnementFromClient(clientId, abonnementId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            // Handle the case where either client or abonnement doesn't exist
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Handle any other unexpected exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
 }

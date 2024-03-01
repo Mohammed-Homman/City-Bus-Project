@@ -1,11 +1,16 @@
 package com.citybus.City.Bus.Project.services.implServices;
 
+import com.citybus.City.Bus.Project.domain.entities.AbonnementEntity;
 import com.citybus.City.Bus.Project.domain.entities.ClientEntity;
+import com.citybus.City.Bus.Project.repositories.AbonnementRepository;
 import com.citybus.City.Bus.Project.repositories.ClientRepository;
 import com.citybus.City.Bus.Project.services.ClientService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -13,9 +18,11 @@ import java.util.stream.StreamSupport;
 @Service
 public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
+    private AbonnementRepository abonnementRepository;
 
-    public ClientServiceImpl(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository, AbonnementRepository abonnementRepository) {
         this.clientRepository = clientRepository;
+        this.abonnementRepository = abonnementRepository;
     }
 
     @Override
@@ -29,12 +36,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Optional<ClientEntity> findOne(String id) {
+    public Optional<ClientEntity> findOne(int id) {
         return clientRepository.findById(id);
     }
 
     @Override
-    public ClientEntity partialUpdate(String id, ClientEntity clientEntity) {
+    public ClientEntity partialUpdate(int id, ClientEntity clientEntity) {
         clientEntity.setId(id);
 
         return clientRepository.findById(id).map(existingClient ->{
@@ -56,12 +63,45 @@ public class ClientServiceImpl implements ClientService {
     ;
 
     @Override
-    public boolean isExists(String id) {
+    public boolean isExists(int id) {
         return clientRepository.existsById(id);
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(int id) {
         clientRepository.deleteById(id);
+    }
+
+    @Override
+    public void addAbonnementToClient(int clientId, int abonnementId) {
+        ClientEntity client = clientRepository.findById(clientId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+        AbonnementEntity abonnement = abonnementRepository.findById(abonnementId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Abonnement not found"));
+
+        client.getAbonnements().add(abonnement);
+        abonnement.getClients().add(client);
+
+        clientRepository.save(client);
+        abonnementRepository.save(abonnement);
+    }
+
+    @Override
+    public void removeAbonnementFromClient(int clientId, int abonnementId) {
+        ClientEntity client = clientRepository.findById(clientId)
+                .orElseThrow(NoSuchElementException::new);
+
+        AbonnementEntity abonnementToRemove = null;
+        for (AbonnementEntity abonnement : client.getAbonnements()) {
+            if (abonnement.getId() == abonnementId) {
+                abonnementToRemove = abonnement;
+                break;
+            }
+        }
+
+        if (abonnementToRemove != null) {
+            client.getAbonnements().remove(abonnementToRemove);
+            clientRepository.save(client);
+        } else {
+            throw new NoSuchElementException("Abonnement not found for the client");
+        }
     }
 }
