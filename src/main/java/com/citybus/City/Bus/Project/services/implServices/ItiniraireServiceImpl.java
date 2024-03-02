@@ -40,8 +40,20 @@ public class ItiniraireServiceImpl implements ItiniraireService {
 
     @Override
     public Itiniraire_Entity partialUpdate(int id, Itiniraire_Entity itiniraireEntity) {
-        return null;
+        itiniraireEntity.setId(id);
+
+        return itiniraireRepository.findById(id).map(existingItiniraire -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(itiniraireEntity.getStation_depart()).ifPresent(existingItiniraire::setStation_depart);
+            Optional.ofNullable(itiniraireEntity.getStation_arrivee()).ifPresent(existingItiniraire::setStation_arrivee);
+            Optional.ofNullable(itiniraireEntity.getStations_intermediaires()).ifPresent(existingItiniraire::setStations_intermediaires);
+            Optional.ofNullable(itiniraireEntity.getLignes()).ifPresent(existingItiniraire::setLignes);
+
+            // Save and return the updated entity
+            return itiniraireRepository.save(existingItiniraire);
+        }).orElseThrow(() -> new RuntimeException("Itiniraire does not exist"));
     }
+
 
     @Override
     public void delete(int id) {

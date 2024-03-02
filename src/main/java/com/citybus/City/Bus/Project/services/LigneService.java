@@ -21,4 +21,16 @@ public interface LigneService {
     void addAbonnementToLigne(int ligneId, int abonnementId);
 
     void removeAbonnementFromLigne(int ligneId, int abonnementId);
+
+    void addBusToLigne(int ligneId, int busId);
+
+    void removeBusFromLigne(int ligneId, int busId);
+
+    void addChauffeurToLigne(int chauffeurId, int ligneId);
+
+    void removeChauffeurFromLigne(int chauffeurId, int ligneId);
+
+    void addStationToLigne(int ligneId, int stationId);
+
+    void removeStationFromLigne(int ligneId, int stationId);
 }

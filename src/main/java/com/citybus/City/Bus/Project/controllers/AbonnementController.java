@@ -109,7 +109,7 @@ public class AbonnementController {
     }
   }
 
-  @PostMapping("/Abonnement/{abonnementId}/addClient/{typeId}")
+  @PostMapping("/Abonnement/{abonnementId}/updateType/{typeId}")
   public ResponseEntity<?> updateAbonnementType(@PathVariable("abonnementId") int abonnementId,
                                                 @PathVariable("clientId") int typeId) {
     try {

@@ -23,4 +23,8 @@ public interface BusService {
     void updateBusStatut(int busId, int statutId);
 
     void updateBusPosition(int busId, int positionId);
+
+    void updateBusChauffeur(int busId, int chauffeurId);
+
+    void updateBusLigne(int busId, int ligneId);
 }

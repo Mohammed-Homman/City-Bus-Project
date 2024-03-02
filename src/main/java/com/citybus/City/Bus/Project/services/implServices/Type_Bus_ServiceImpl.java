@@ -40,9 +40,18 @@ public class Type_Bus_ServiceImpl implements Type_Bus_Service {
     }
 
     @Override
-    public Type_Bus_Entity partialUpdate(Type_Bus_Entity typeBusEntity) {
-        return null;
+    public Type_Bus_Entity partialUpdate(int id, Type_Bus_Entity typeBusEntity) {
+        typeBusEntity.setId(id);
+
+        return type_bus_repository.findById(id).map(existingType -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(typeBusEntity.getNom_type_bus()).ifPresent(existingType::setNom_type_bus);
+
+            // Save and return the updated entity
+            return type_bus_repository.save(existingType);
+        }).orElseThrow(() -> new RuntimeException("Type_Bus_Entity does not exist"));
     }
+
 
     @Override
     public void delete(int id) {

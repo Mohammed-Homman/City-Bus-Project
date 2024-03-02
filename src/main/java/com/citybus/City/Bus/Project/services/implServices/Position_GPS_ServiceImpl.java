@@ -40,8 +40,19 @@ public class Position_GPS_ServiceImpl implements Position_GPS_Service {
 
     @Override
     public Position_GPS_Entity partialUpdate(int id, Position_GPS_Entity positionGpsEntity) {
-        return null;
+        positionGpsEntity.setId(id);
+
+        return positionGpsRepository.findById(id).map(existingPositionGps -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(positionGpsEntity.getLatitude()).ifPresent(existingPositionGps::setLatitude);
+            Optional.ofNullable(positionGpsEntity.getLongitude()).ifPresent(existingPositionGps::setLongitude);
+            Optional.ofNullable(positionGpsEntity.getTemps_de_localisation()).ifPresent(existingPositionGps::setTemps_de_localisation);
+
+            // Save and return the updated entity
+            return positionGpsRepository.save(existingPositionGps);
+        }).orElseThrow(() -> new RuntimeException("Position_GPS_Entity does not exist"));
     }
+
 
     @Override
     public void delete(int id) {

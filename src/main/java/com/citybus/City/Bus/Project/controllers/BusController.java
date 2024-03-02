@@ -115,4 +115,24 @@ public class BusController {
         }
     }
 
+    @PostMapping("/Bus/{busId}/updateChauffeur/{chauffeurId}")
+    public ResponseEntity<?> updateBusChauffeur(@PathVariable("busId") int busId,
+                                               @PathVariable("chauffeurId") int chauffeurId) {
+        try {
+            busService.updateBusChauffeur(busId, chauffeurId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update bus chauffeur.");
+        }
+    }
+    @PostMapping("/Bus/{busId}/updateLigne/{ligneId}")
+    public ResponseEntity<?> updateBusLigne(@PathVariable("busId") int busId,
+                                               @PathVariable("ligneId") int ligneId) {
+        try {
+            busService.updateBusLigne(busId, ligneId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update bus ligne.");
+        }
+    }
 }

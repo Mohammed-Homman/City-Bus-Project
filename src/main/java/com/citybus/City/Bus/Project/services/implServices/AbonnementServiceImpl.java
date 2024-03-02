@@ -54,8 +54,22 @@ public class AbonnementServiceImpl implements AbonnementService {
 
     @Override
     public AbonnementEntity partialUpdate(int id, AbonnementEntity abonnementEntity) {
-        return null;
+        abonnementEntity.setId(id);
+
+        return abonnementRepository.findById(id).map(existingAbonnement -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(abonnementEntity.getDate_debut()).ifPresent(existingAbonnement::setDate_debut);
+            Optional.ofNullable(abonnementEntity.getDate_fin()).ifPresent(existingAbonnement::setDate_fin);
+            Optional.ofNullable(abonnementEntity.getPrix()).ifPresent(existingAbonnement::setPrix);
+            Optional.ofNullable(abonnementEntity.getTypeAbonnementEntity()).ifPresent(existingAbonnement::setTypeAbonnementEntity);
+            Optional.ofNullable(abonnementEntity.getStatutAbonnementEntity()).ifPresent(existingAbonnement::setStatutAbonnementEntity);
+            Optional.ofNullable(abonnementEntity.getLignes()).ifPresent(existingAbonnement::setLignes);
+
+            // Save and return the updated entity
+            return abonnementRepository.save(existingAbonnement);
+        }).orElseThrow(() -> new RuntimeException("Abonnement does not exist"));
     }
+
 
     @Override
     public void addClientToAbonnement(int clientId, int abonnementId) {
@@ -99,7 +113,7 @@ public class AbonnementServiceImpl implements AbonnementService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Abonnement not found"));
 
         Statut_AbonnementEntity newStatut = statut_abonnement_repository.findById(statutId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Type_Abonnement not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Statut_Abonnement not found"));
 
         abonnement.setStatutAbonnementEntity(newStatut);
         abonnementRepository.save(abonnement);

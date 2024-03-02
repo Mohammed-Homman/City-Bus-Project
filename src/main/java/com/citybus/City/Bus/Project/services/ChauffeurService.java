@@ -17,4 +17,10 @@ public interface ChauffeurService {
     ChauffeurEntity partialUpdate(int id, ChauffeurEntity chauffeurEntity);
 
     void delete(int id);
+
+    void updateBusStatut(int chauffeurId, int statutId);
+
+    void addLigneToChauffeur(int ligneId, int chauffeurId);
+
+    void removeLigneFromChauffeur(int ligneId, int chauffeurId);
 }

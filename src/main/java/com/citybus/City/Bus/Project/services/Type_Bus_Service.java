@@ -16,5 +16,5 @@ public interface Type_Bus_Service {
 
     void delete(int id);
 
-    Type_Bus_Entity partialUpdate(Type_Bus_Entity typeBusEntity);
+    Type_Bus_Entity partialUpdate(int id, Type_Bus_Entity typeBusEntity);
 }

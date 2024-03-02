@@ -41,8 +41,17 @@ public class Statut_Abonnement_ServiceImpl implements Statut_Abonnement_Service 
 
     @Override
     public Statut_AbonnementEntity partialUpdate(int id, Statut_AbonnementEntity statutAbonnementEntity) {
-        return null;
+        statutAbonnementEntity.setId(id);
+
+        return statut_abonnement_repository.findById(id).map(existingStatut -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(statutAbonnementEntity.getNom_statut_abonnement()).ifPresent(existingStatut::setNom_statut_abonnement);
+
+            // Save and return the updated entity
+            return statut_abonnement_repository.save(existingStatut);
+        }).orElseThrow(() -> new RuntimeException("Statut_AbonnementEntity does not exist"));
     }
+
 
     @Override
     public void delete(int id) {

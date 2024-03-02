@@ -70,7 +70,7 @@ public class Type_AbonnementController {
         }
 
         Type_AbonnementEntity typeAbonnementEntity = typeAbonnementMapper.mapFrom(typeAbonnementDto);
-        Type_AbonnementEntity savedTypeAbonnementEntity = type_abonnement_service.partialUpdate(typeAbonnementEntity);
+        Type_AbonnementEntity savedTypeAbonnementEntity = type_abonnement_service.partialUpdate(id,typeAbonnementEntity);
         return new ResponseEntity<>(
                 typeAbonnementMapper.mapTo(savedTypeAbonnementEntity),
                 HttpStatus.OK);
