@@ -40,8 +40,17 @@ public class Statut_Bus_ServiceImpl implements Statut_Bus_Service {
 
     @Override
     public Statut_Bus_Entity partialUpdate(int id, Statut_Bus_Entity statutBusEntity) {
-        return null;
+        statutBusEntity.setId(id);
+
+        return statutBusRepository.findById(id).map(existingStatut -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(statutBusEntity.getNom_statut_bus()).ifPresent(existingStatut::setNom_statut_bus);
+
+            // Save and return the updated entity
+            return statutBusRepository.save(existingStatut);
+        }).orElseThrow(() -> new RuntimeException("Statut_Bus_Entity does not exist"));
     }
+
 
     @Override
     public void delete(int id) {

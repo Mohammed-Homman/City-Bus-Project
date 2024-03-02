@@ -5,11 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ArretDto {
+public class Point_de_venteDto {
     private int id;
-    private int ordre_arret;
+    private String nom;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 }

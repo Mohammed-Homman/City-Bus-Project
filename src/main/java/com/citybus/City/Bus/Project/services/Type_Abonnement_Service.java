@@ -16,5 +16,5 @@ public interface Type_Abonnement_Service {
 
     void delete(int id);
 
-    Type_AbonnementEntity partialUpdate(Type_AbonnementEntity typeAbonnementEntity);
+    Type_AbonnementEntity partialUpdate(int id, Type_AbonnementEntity typeAbonnementEntity);
 }

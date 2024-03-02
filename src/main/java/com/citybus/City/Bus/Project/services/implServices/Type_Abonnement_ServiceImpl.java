@@ -39,12 +39,22 @@ public class Type_Abonnement_ServiceImpl implements Type_Abonnement_Service {
     }
 
     @Override
-    public Type_AbonnementEntity partialUpdate(Type_AbonnementEntity typeAbonnementEntity) {
-        return null;
+    public Type_AbonnementEntity partialUpdate(int id, Type_AbonnementEntity typeAbonnementEntity) {
+        typeAbonnementEntity.setId(id);
+
+        return type_abonnement_repository.findById(id).map(existingType -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(typeAbonnementEntity.getNom_type_abonnement()).ifPresent(existingType::setNom_type_abonnement);
+
+            // Save and return the updated entity
+            return type_abonnement_repository.save(existingType);
+        }).orElseThrow(() -> new RuntimeException("Type_AbonnementEntity does not exist"));
     }
+
 
     @Override
     public void delete(int id) {
         type_abonnement_repository.deleteById(id);
     }
+
 }

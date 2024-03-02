@@ -34,7 +34,8 @@ public class ClientController {
         } catch (DataIntegrityViolationException e) {
             // Handle duplicate key violation gracefully
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }}
+        }
+    }
     @GetMapping(path="/Client")
     public List<ClientDto> listClients(){
         List<ClientEntity> clientEntities = clientService.findAll();

@@ -1,10 +1,7 @@
 package com.citybus.City.Bus.Project.services.implServices;
 
 import com.citybus.City.Bus.Project.domain.entities.*;
-import com.citybus.City.Bus.Project.repositories.BusRepository;
-import com.citybus.City.Bus.Project.repositories.Position_GPS_Repository;
-import com.citybus.City.Bus.Project.repositories.Statut_Bus_Repository;
-import com.citybus.City.Bus.Project.repositories.Type_Bus_Repository;
+import com.citybus.City.Bus.Project.repositories.*;
 import com.citybus.City.Bus.Project.services.BusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,12 +18,16 @@ public class BusServiceImpl implements BusService {
     private Type_Bus_Repository type_bus_repository;
     private Statut_Bus_Repository statut_bus_repository;
     private Position_GPS_Repository positionGpsRepository;
+    private ChauffeurRepository chauffeurRepository;
+    private LigneRepository ligneRepository;
 
-    public BusServiceImpl(BusRepository busRepository, Type_Bus_Repository type_bus_repository, Statut_Bus_Repository statut_bus_repository, Position_GPS_Repository positionGpsRepository) {
+    public BusServiceImpl(BusRepository busRepository, Type_Bus_Repository type_bus_repository, Statut_Bus_Repository statut_bus_repository, Position_GPS_Repository positionGpsRepository, ChauffeurRepository chauffeurRepository, LigneRepository ligneRepository) {
         this.busRepository = busRepository;
         this.type_bus_repository = type_bus_repository;
         this.statut_bus_repository = statut_bus_repository;
         this.positionGpsRepository = positionGpsRepository;
+        this.chauffeurRepository = chauffeurRepository;
+        this.ligneRepository = ligneRepository;
     }
 
     @Override
@@ -51,11 +52,27 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public Bus_Entity partialUpdate(int id, Bus_Entity busEntity) {
-        return busRepository.findById(id).map(existingBus->{
+        busEntity.setId(id);
+
+        return busRepository.findById(id).map(existingBus -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(busEntity.getMatricule()).ifPresent(existingBus::setMatricule);
             Optional.ofNullable(busEntity.getMarque()).ifPresent(existingBus::setMarque);
+            Optional.ofNullable(busEntity.getModele()).ifPresent(existingBus::setModele);
+            Optional.ofNullable(busEntity.getCapacite()).ifPresent(existingBus::setCapacite);
+            Optional.ofNullable(busEntity.getDerniere_maintenance()).ifPresent(existingBus::setDerniere_maintenance);
+            Optional.ofNullable(busEntity.getNombre_de_reparation()).ifPresent(existingBus::setNombre_de_reparation);
+            Optional.ofNullable(busEntity.getTypeBusEntity()).ifPresent(existingBus::setTypeBusEntity);
+            Optional.ofNullable(busEntity.getStatutBusEntity()).ifPresent(existingBus::setStatutBusEntity);
+            Optional.ofNullable(busEntity.getPositionGpsEntity()).ifPresent(existingBus::setPositionGpsEntity);
+            Optional.ofNullable(busEntity.getChauffeur()).ifPresent(existingBus::setChauffeur);
+            Optional.ofNullable(busEntity.getLigne()).ifPresent(existingBus::setLigne);
+
+            // Save and return the updated entity
             return busRepository.save(existingBus);
-        }).orElseThrow(()-> new RuntimeException("Bus does not exist"));
+        }).orElseThrow(() -> new RuntimeException("Bus does not exist"));
     }
+
 
     @Override
     public void delete(int id) {
@@ -95,6 +112,30 @@ public class BusServiceImpl implements BusService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Position not found"));
 
         bus.setPositionGpsEntity(newPosition);
+        busRepository.save(bus);
+    }
+
+    @Override
+    public void updateBusChauffeur(int busId, int chauffeurId) {
+        Bus_Entity bus = busRepository.findById(busId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bus not found"));
+
+        ChauffeurEntity newChauffeur = chauffeurRepository.findById(chauffeurId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chauffeur not found"));
+
+        bus.setChauffeur(newChauffeur);
+        busRepository.save(bus);
+    }
+
+    @Override
+    public void updateBusLigne(int busId, int ligneId) {
+        Bus_Entity bus = busRepository.findById(busId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bus not found"));
+
+        LigneEntity newLigne = ligneRepository.findById(ligneId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ligne not found"));
+
+        bus.setLigne(newLigne);
         busRepository.save(bus);
     }
 }

@@ -1,9 +1,7 @@
 package com.citybus.City.Bus.Project.services.implServices;
 
-import com.citybus.City.Bus.Project.domain.entities.AbonnementEntity;
-import com.citybus.City.Bus.Project.domain.entities.LigneEntity;
-import com.citybus.City.Bus.Project.repositories.AbonnementRepository;
-import com.citybus.City.Bus.Project.repositories.LigneRepository;
+import com.citybus.City.Bus.Project.domain.entities.*;
+import com.citybus.City.Bus.Project.repositories.*;
 import com.citybus.City.Bus.Project.services.LigneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,10 +17,16 @@ import java.util.stream.StreamSupport;
 public class LigneServiceImpl implements LigneService {
     private LigneRepository ligneRepository;
     private AbonnementRepository abonnementRepository;
+    private BusRepository busRepository;
+    private ChauffeurRepository chauffeurRepository;
+    private StationRepository stationRepository;
 
-    public LigneServiceImpl(LigneRepository ligneRepository, AbonnementRepository abonnementRepository) {
+    public LigneServiceImpl(LigneRepository ligneRepository, AbonnementRepository abonnementRepository, BusRepository busRepository, ChauffeurRepository chauffeurRepository, StationRepository stationRepository) {
         this.ligneRepository = ligneRepository;
         this.abonnementRepository = abonnementRepository;
+        this.busRepository = busRepository;
+        this.chauffeurRepository = chauffeurRepository;
+        this.stationRepository = stationRepository;
     }
 
     @Override
@@ -47,8 +51,23 @@ public class LigneServiceImpl implements LigneService {
 
     @Override
     public LigneEntity partialUpdate(int id, LigneEntity ligneEntity) {
-        return null;
+        ligneEntity.setId(id);
+
+        return ligneRepository.findById(id).map(existingLigne -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(ligneEntity.getNom_ligne()).ifPresent(existingLigne::setNom_ligne);
+            Optional.ofNullable(ligneEntity.getDescription_ligne()).ifPresent(existingLigne::setDescription_ligne);
+            Optional.ofNullable(ligneEntity.getDistance_ligne()).ifPresent(existingLigne::setDistance_ligne);
+            Optional.ofNullable(ligneEntity.getAbonnements()).ifPresent(existingLigne::setAbonnements);
+            Optional.ofNullable(ligneEntity.getBuss()).ifPresent(existingLigne::setBuss);
+            Optional.ofNullable(ligneEntity.getChauffeurs()).ifPresent(existingLigne::setChauffeurs);
+            Optional.ofNullable(ligneEntity.getStations()).ifPresent(existingLigne::setStations);
+
+            // Save and return the updated entity
+            return ligneRepository.save(existingLigne);
+        }).orElseThrow(() -> new RuntimeException("Ligne does not exist"));
     }
+
 
     @Override
     public void delete(int id) {
@@ -86,6 +105,87 @@ public class LigneServiceImpl implements LigneService {
         } else {
             throw new NoSuchElementException("Abonnement not found for the ligne");
         }
+    }
+
+    @Override
+    public void addBusToLigne(int ligneId, int busId) {
+        LigneEntity ligne = ligneRepository.findById(ligneId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ligne not found"));
+        Bus_Entity bus = busRepository.findById(busId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bus not found"));
+
+        ligne.getBuss().add(bus);
+        bus.setLigne(ligne);
+
+        ligneRepository.save(ligne);
+        busRepository.save(bus);
+    }
+
+    @Override
+    public void removeBusFromLigne(int ligneId, int busId) {
+        LigneEntity ligne = ligneRepository.findById(ligneId)
+                .orElseThrow(NoSuchElementException::new);
+
+        Bus_Entity busToRemove = null;
+        for (Bus_Entity bus : ligne.getBuss()) {
+            if (bus.getId() == busId) {
+                busToRemove = bus;
+                break;
+            }
+        }
+
+        if (busToRemove != null) {
+            ligne.getBuss().remove(busToRemove);
+            ligneRepository.save(ligne);
+        } else {
+            throw new NoSuchElementException("Bus not found for the ligne");
+        }
+    }
+
+    @Override
+    public void addChauffeurToLigne(int chauffeurId, int ligneId) {
+        ChauffeurEntity chauffeur = chauffeurRepository.findById(chauffeurId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chauffeur not found"));
+        LigneEntity ligne = ligneRepository.findById(ligneId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ligne not found"));
+
+        ligne.getChauffeurs().add(chauffeur);
+        chauffeur.getLignes().add(ligne);
+
+        ligneRepository.save(ligne);
+        chauffeurRepository.save(chauffeur);
+    }
+
+    @Override
+    public void removeChauffeurFromLigne(int chauffeurId, int ligneId) {
+        ChauffeurEntity chauffeur = chauffeurRepository.findById(chauffeurId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chauffeur not found"));
+        LigneEntity ligne = ligneRepository.findById(ligneId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ligne not found"));
+
+        ligne.getChauffeurs().remove(chauffeur);
+        chauffeur.getLignes().remove(ligne);
+
+        ligneRepository.save(ligne);
+        chauffeurRepository.save(chauffeur);
+    }
+
+    @Override
+    public void addStationToLigne(int stationId, int ligneId) {
+        Station_Entity station = stationRepository.findById(stationId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station not found"));
+        LigneEntity ligne = ligneRepository.findById(ligneId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ligne not found"));
+
+        ligne.getStations().add(station);
+        station.setLigne(ligne);
+
+        ligneRepository.save(ligne);
+        stationRepository.save(station);
+    }
+
+    @Override
+    public void removeStationFromLigne(int stationId, int ligneId) {
+        Station_Entity station = stationRepository.findById(stationId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station not found"));
+        LigneEntity ligne = ligneRepository.findById(ligneId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ligne not found"));
+
+        ligne.getStations().remove(station);
+        station.setLigne(null);
+
+        ligneRepository.save(ligne);
+        stationRepository.save(station);
     }
 
 }

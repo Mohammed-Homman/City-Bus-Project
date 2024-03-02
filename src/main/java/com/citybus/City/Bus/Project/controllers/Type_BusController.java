@@ -71,7 +71,7 @@ public class Type_BusController {
         }
 
         Type_Bus_Entity typeBusEntity = typeBusMapper.mapFrom(typeBusDto);
-        Type_Bus_Entity savedTypeBusEntity = typeBusService.partialUpdate(typeBusEntity);
+        Type_Bus_Entity savedTypeBusEntity = typeBusService.partialUpdate(id,typeBusEntity);
         return new ResponseEntity<>(
                 typeBusMapper.mapTo(savedTypeBusEntity),
                 HttpStatus.OK);

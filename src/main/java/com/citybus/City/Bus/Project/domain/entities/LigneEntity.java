@@ -21,10 +21,21 @@ public class LigneEntity {
     private int id;
     private String nom_ligne;
     private String description_ligne;
-    private String couleur_ligne;
     private Double distance_ligne;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "lignes")
     private List<AbonnementEntity> abonnements;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne", cascade = CascadeType.ALL)
+    private List<Bus_Entity> buss;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JoinTable(name = "Chauffeur_Ligne", joinColumns = @JoinColumn(name = "ligne_id"),
+            inverseJoinColumns = @JoinColumn(name = "chauffeur_id"))
+    private List<ChauffeurEntity> chauffeurs;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne", cascade = CascadeType.ALL)
+    private List<Station_Entity> stations;
 }

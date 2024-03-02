@@ -103,5 +103,66 @@ public class LigneController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PutMapping(path = "/Ligne/{ligneId}/addBus/{busId}")
+    public ResponseEntity<Void> addBusToLigne(@PathVariable("ligneId") int ligneId, @PathVariable("busId") int busId) {
+        ligneService.addBusToLigne(ligneId, busId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @DeleteMapping(path = "/Ligne/{ligneId}/removeBus/{busId}")
+    public ResponseEntity<Void> removeBusFromLigne(@PathVariable("ligneId") int ligneId, @PathVariable("busId") int busId) {
+        try {
+            ligneService.removeBusFromLigne(ligneId, busId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            // Gérer le cas où la ligne ou le bus n'existe pas
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Gérer toute autre exception inattendue
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping(path = "/Ligne/{ligneId}/addChauffeur/{chauffeurId}")
+    public ResponseEntity<Void> addChauffeurToLigne(@PathVariable("ligneId") int ligneId, @PathVariable("chauffeurId") int chauffeurId) {
+        ligneService.addChauffeurToLigne(chauffeurId, ligneId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/Ligne/{ligneId}/removeChauffeur/{chauffeurId}")
+    public ResponseEntity<Void> removeChauffeurFromLigne(@PathVariable("ligneId") int ligneId,
+                                                           @PathVariable("chauffeurId") int chauffeurId) {
+        try {
+            // Vérifier si la ligne existe
+            if (!ligneService.isExists(ligneId)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Supprimer le chauffeur de la ligne
+            ligneService.removeChauffeurFromLigne(chauffeurId, ligneId);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping(path = "/Ligne/{ligneId}/addStation/{stationId}")
+    public ResponseEntity<Void> addStationToLigne(@PathVariable("ligneId") int ligneId, @PathVariable("stationId") int stationId) {
+        ligneService.addStationToLigne(ligneId, stationId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/Ligne/{ligneId}/removeStation/{stationId}")
+    public ResponseEntity<Void> removeStationFromLigne(@PathVariable("ligneId") int ligneId, @PathVariable("stationId") int stationId) {
+        try {
+            ligneService.removeStationFromLigne(ligneId, stationId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            // Handle case where the ligne or station does not exist
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Handle any other unexpected exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

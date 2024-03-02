@@ -36,4 +36,12 @@ public class Bus_Entity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "position_bus_id")
     private Position_GPS_Entity positionGpsEntity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "chauffeur_id")
+    private ChauffeurEntity chauffeur;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ligne_id")
+    private LigneEntity ligne;
 }

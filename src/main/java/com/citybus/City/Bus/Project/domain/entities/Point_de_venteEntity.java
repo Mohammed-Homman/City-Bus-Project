@@ -6,15 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Arret")
-public class ArretEntity {
+@Table(name = "Point de vent")
+public class Point_de_venteEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "arret_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    private int ordre_arret;
+    private String nom;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 }

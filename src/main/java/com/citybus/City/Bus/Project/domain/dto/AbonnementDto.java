@@ -1,6 +1,7 @@
 package com.citybus.City.Bus.Project.domain.dto;
 
 import com.citybus.City.Bus.Project.domain.entities.ClientEntity;
+import com.citybus.City.Bus.Project.domain.entities.LigneEntity;
 import com.citybus.City.Bus.Project.domain.entities.Statut_AbonnementEntity;
 import com.citybus.City.Bus.Project.domain.entities.Type_AbonnementEntity;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,5 @@ public class AbonnementDto {
     private List<ClientEntity> clients;
     private Type_AbonnementEntity typeAbonnement;
     private Statut_AbonnementEntity statutAbonnementEntity;
+    private List<LigneEntity> lignes;
 }

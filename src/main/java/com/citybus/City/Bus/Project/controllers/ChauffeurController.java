@@ -82,5 +82,35 @@ public class ChauffeurController {
         chauffeurService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    @PostMapping("/Chauffeur/{chauffeurId}/updateStatut/{statutId}")
+    public ResponseEntity<?> updateChauffeurStatut(@PathVariable("chauffeurId") int chauffeurId, @PathVariable("statutId") int statutId){
+        try {
+            chauffeurService.updateBusStatut(chauffeurId, statutId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update subscription status.");
+        }
+    }
+    @PutMapping(path = "/Chauffeur/{chauffeurId}/addLigne/{ligneId}")
+    public ResponseEntity<Void> addLigneToChauffeur(@PathVariable("chauffeurId") int chauffeurId, @PathVariable("ligneId") int ligneId) {
+        chauffeurService.addLigneToChauffeur(ligneId, chauffeurId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/Chauffeur/{chauffeurId}/removeLigne/{ligneId}")
+    public ResponseEntity<Void> removeLigneFromChauffeur(@PathVariable("chauffeurId") int chauffeurId,
+                                                         @PathVariable("ligneId") int ligneId) {
+        try {
+            // Vérifier si le chauffeur existe
+            if (!chauffeurService.isExists(chauffeurId)) {
+                return ResponseEntity.notFound().build();
+            }
 
+            // Supprimer la ligne du chauffeur
+            chauffeurService.removeLigneFromChauffeur(ligneId, chauffeurId);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

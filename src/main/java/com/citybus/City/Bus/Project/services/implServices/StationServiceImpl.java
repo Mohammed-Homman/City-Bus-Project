@@ -40,8 +40,22 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public Station_Entity partialUpdate(int id, Station_Entity stationEntity) {
-        return null;
+        stationEntity.setId(id);
+
+        return stationRepository.findById(id).map(existingStation -> {
+            // Update fields if present in the provided entity
+            Optional.ofNullable(stationEntity.getNom_station()).ifPresent(existingStation::setNom_station);
+            Optional.ofNullable(stationEntity.getLatitude()).ifPresent(existingStation::setLatitude);
+            Optional.ofNullable(stationEntity.getLongitude()).ifPresent(existingStation::setLongitude);
+            Optional.ofNullable(stationEntity.getOrdre()).ifPresent(existingStation::setOrdre);
+            Optional.ofNullable(stationEntity.getLigne()).ifPresent(existingStation::setLigne);
+            Optional.ofNullable(stationEntity.getHoraire()).ifPresent(existingStation::setHoraire);
+
+            // Save and return the updated entity
+            return stationRepository.save(existingStation);
+        }).orElseThrow(() -> new RuntimeException("Station_Entity does not exist"));
     }
+
 
     @Override
     public void delete(int id) {
