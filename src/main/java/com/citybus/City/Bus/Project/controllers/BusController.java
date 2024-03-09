@@ -83,7 +83,7 @@ public class BusController {
         busService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    @PostMapping("/Bus/{busId}/addClient/{typeId}")
+    @PostMapping("/Bus/{busId}/updateType/{typeId}")
     public ResponseEntity<?> updateBusType(@PathVariable("busId") int busId,
                                                   @PathVariable("clientId") int typeId) {
         try {

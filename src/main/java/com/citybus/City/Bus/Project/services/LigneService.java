@@ -33,4 +33,6 @@ public interface LigneService {
     void addStationToLigne(int ligneId, int stationId);
 
     void removeStationFromLigne(int ligneId, int stationId);
+
+    Integer findIdByNomLigne(String nomLigne);
 }

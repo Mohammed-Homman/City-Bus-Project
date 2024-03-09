@@ -165,4 +165,13 @@ public class LigneController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @GetMapping(path = "/Ligne/id")
+    public ResponseEntity<Integer> getLigneIdByNomLigne(@RequestParam("nomLigne") String nomLigne) {
+        Integer ligneId = ligneService.findIdByNomLigne(nomLigne);
+        if (ligneId != null) {
+            return ResponseEntity.ok().body(ligneId);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

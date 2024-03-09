@@ -188,4 +188,8 @@ public class LigneServiceImpl implements LigneService {
         stationRepository.save(station);
     }
 
+    @Override
+    public Integer findIdByNomLigne(String nomLigne) {
+        return ligneRepository.findIdByNomLigne(nomLigne);
+    }
 }
