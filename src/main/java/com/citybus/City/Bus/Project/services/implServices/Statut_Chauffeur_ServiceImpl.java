@@ -44,7 +44,7 @@ public class Statut_Chauffeur_ServiceImpl implements Statut_Chauffeur_Service {
 
         return statutChauffeurRepository.findById(id).map(existingStatut -> {
             // Update fields if present in the provided entity
-            Optional.ofNullable(statutChauffeurEntity.getNom_satut_chauffeur()).ifPresent(existingStatut::setNom_satut_chauffeur);
+            Optional.ofNullable(statutChauffeurEntity.getNom_statut_chauffeur()).ifPresent(existingStatut::setNom_statut_chauffeur);
 
             // Save and return the updated entity
             return statutChauffeurRepository.save(existingStatut);

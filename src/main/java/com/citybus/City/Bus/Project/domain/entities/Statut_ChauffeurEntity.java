@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "Satut_Chauffeur")
+@Table(name = "Statut_Chauffeur")
 public class Statut_ChauffeurEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    private String nom_satut_chauffeur;
+    private String nom_statut_chauffeur;
 }
