@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -82,6 +83,25 @@ public class StationController {
     public ResponseEntity deleteStation(@PathVariable("id") int id){
         stationService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    @PutMapping(path = "/Station/{stationId}/addHoraire/{horaireId}")
+    public ResponseEntity<Void> addHoraireToStation(@PathVariable("stationId") int stationId, @PathVariable("horaireId") int horaireId) {
+        stationService.addHoraireToStation(stationId, horaireId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/Station/{stationId}/removeHoraire/{horaireId}")
+    public ResponseEntity<Void> removeHoraireFromStation(@PathVariable("stationId") int stationId, @PathVariable("horaireId") int horaireId) {
+        try {
+            stationService.removeHoraireFromStation(stationId, horaireId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            // Handle case where the horaire or station does not exist
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            // Handle any other unexpected exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
 

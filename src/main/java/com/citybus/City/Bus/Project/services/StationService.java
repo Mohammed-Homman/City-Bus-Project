@@ -17,4 +17,8 @@ public interface StationService {
     Station_Entity partialUpdate(int id, Station_Entity stationEntity);
 
     void delete(int id);
+
+    void addHoraireToStation(int stationId, int horaireId);
+
+    void removeHoraireFromStation(int stationId, int horaireId);
 }
