@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.grammars.hql.HqlParser;
-
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -23,5 +20,7 @@ public class HoraireEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private JourSemaine jour_semaine;
+
+    @ElementCollection
     private List<LocalTime> heure;
 }
