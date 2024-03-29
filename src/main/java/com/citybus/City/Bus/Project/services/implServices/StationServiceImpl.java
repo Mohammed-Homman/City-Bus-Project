@@ -1,9 +1,14 @@
 package com.citybus.City.Bus.Project.services.implServices;
 
+import com.citybus.City.Bus.Project.domain.entities.HoraireEntity;
+import com.citybus.City.Bus.Project.domain.entities.LigneEntity;
 import com.citybus.City.Bus.Project.domain.entities.Station_Entity;
+import com.citybus.City.Bus.Project.repositories.HoraireRepository;
 import com.citybus.City.Bus.Project.repositories.StationRepository;
 import com.citybus.City.Bus.Project.services.StationService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +18,11 @@ import java.util.stream.StreamSupport;
 @Service
 public class StationServiceImpl implements StationService {
     private StationRepository stationRepository;
+    private HoraireRepository horaireRepository;
 
-    public StationServiceImpl(StationRepository stationRepository) {
+    public StationServiceImpl(StationRepository stationRepository, HoraireRepository horaireRepository) {
         this.stationRepository = stationRepository;
+        this.horaireRepository = horaireRepository;
     }
 
     @Override
@@ -60,5 +67,25 @@ public class StationServiceImpl implements StationService {
     @Override
     public void delete(int id) {
         stationRepository.deleteById(id);
+    }
+
+    @Override
+    public void addHoraireToStation(int stationId, int horaireId) {
+        Station_Entity station = stationRepository.findById(stationId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station not found"));
+        HoraireEntity horaire = horaireRepository.findById(horaireId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Horaire not found"));
+
+        station.getHoraire().add(horaire);
+
+        stationRepository.save(station);
+    }
+
+    @Override
+    public void removeHoraireFromStation(int stationId, int horaireId) {
+        Station_Entity station = stationRepository.findById(stationId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Station not found"));
+        HoraireEntity horaire = horaireRepository.findById(horaireId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Horaire not found"));
+
+        station.getHoraire().remove(horaire);
+
+        stationRepository.save(station);
     }
 }

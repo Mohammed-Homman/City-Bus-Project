@@ -36,6 +36,11 @@ public class LigneEntity {
             inverseJoinColumns = @JoinColumn(name = "chauffeur_id"))
     private List<ChauffeurEntity> chauffeurs;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ligne", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "Ligne_Station",
+            joinColumns = @JoinColumn(name = "ligne_id"),
+            inverseJoinColumns = @JoinColumn(name = "station_id")
+    )
     private List<Station_Entity> stations;
 }

@@ -25,7 +25,6 @@ public class Station_Entity {
     private int ordre;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ligne_id")
     private LigneEntity ligne;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
